@@ -1,207 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#111111" />
-  <title>BarberPro | Reservas & Gestión</title>
-  <style>
-    :root {
-      --bg: #0f0f11;
-      --card: #18181c;
-      --card-hover: #222228;
-      --gold: #d4af37;
-      --gold-dark: #b59224;
-      --text: #f5f5f7;
-      --muted: #9ca3af;
-      --danger: #ef4444;
-      --success: #10b981;
-      --border: #2a2a32;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
-    
-    /* Header & Mode Switcher */
-    header {
-      background: linear-gradient(180deg, #1c1c21 0%, #0f0f11 100%);
-      padding: 18px 16px;
-      border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 50;
-    }
-    .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; }
-    .brand h1 { font-size: 1.25rem; color: var(--gold); letter-spacing: 0.5px; }
-    .brand p { font-size: 0.78rem; color: var(--muted); }
-    
-    .role-switch {
-      display: flex; background: #000; border: 1px solid var(--border); border-radius: 20px; padding: 3px;
-    }
-    .role-btn {
-      background: transparent; border: none; color: var(--muted); padding: 6px 12px;
-      font-size: 0.78rem; font-weight: 600; border-radius: 16px; cursor: pointer; transition: 0.2s;
-    }
-    .role-btn.active { background: var(--gold); color: #000; }
-
-    .container { max-width: 600px; margin: 0 auto; padding: 16px; }
-    
-    /* Promo Banner */
-    .promo-banner {
-      background: linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.05));
-      border: 1px solid rgba(212,175,55,0.4);
-      border-radius: 12px; padding: 14px; margin-bottom: 20px;
-      display: flex; align-items: center; gap: 12px;
-    }
-    .promo-badge { background: var(--gold); color: #000; font-weight: 800; font-size: 0.7rem; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
-    .promo-text { font-size: 0.88rem; line-height: 1.3; }
-
-    /* Sections & Cards */
-    h2 { font-size: 1rem; margin: 18px 0 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; }
-    .card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-      padding: 14px; margin-bottom: 10px; transition: 0.2s;
-    }
-    .service-item { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-    .service-item.selected { border-color: var(--gold); background: rgba(212,175,55,0.08); }
-    .service-info h3 { font-size: 0.98rem; margin-bottom: 3px; }
-    .service-info span { font-size: 0.8rem; color: var(--muted); }
-    .service-price { font-weight: 700; color: var(--gold); font-size: 1rem; }
-
-    /* Barbers Grid */
-    .barbers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
-    .barber-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-      padding: 12px 8px; text-align: center; cursor: pointer;
-    }
-    .barber-card.selected { border-color: var(--gold); background: rgba(212,175,55,0.1); }
-    .avatar {
-      width: 44px; height: 44px; border-radius: 50%; background: #2c2c35; color: var(--gold);
-      display: flex; align-items: center; justify-content: center; font-weight: bold; margin: 0 auto 8px; font-size: 1.1rem;
-    }
-    .barber-card p { font-size: 0.85rem; font-weight: 600; }
-    .barber-card small { font-size: 0.72rem; color: var(--muted); }
-
-    /* Inputs & Time Slots */
-    input, select {
-      width: 100%; background: #121215; border: 1px solid var(--border); color: var(--text);
-      padding: 12px; border-radius: 10px; font-size: 0.95rem; margin-bottom: 10px; outline: none;
-    }
-    input:focus { border-color: var(--gold); }
-    
-    .slots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
-    .slot {
-      background: var(--card); border: 1px solid var(--border); color: var(--text);
-      padding: 10px 4px; border-radius: 8px; text-align: center; font-size: 0.85rem; cursor: pointer;
-    }
-    .slot.selected { background: var(--gold); color: #000; font-weight: 700; border-color: var(--gold); }
-    .slot.booked {
-      background: #141417; color: #4b5563; border-color: #1f1f24;
-      text-decoration: line-through; cursor: not-allowed;
-    }
-
-    /* Buttons */
-    .btn {
-      width: 100%; background: var(--gold); color: #000; border: none; padding: 14px;
-      border-radius: 10px; font-weight: 700; font-size: 0.98rem; cursor: pointer; margin-top: 10px;
-    }
-    .btn:active { transform: scale(0.99); }
-    .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-    .btn-danger { background: rgba(239,68,68,0.15); color: var(--danger); border: 1px solid var(--danger); padding: 6px 10px; font-size: 0.78rem; width: auto; margin-top: 0; }
-    .btn-success { background: rgba(16,185,129,0.15); color: var(--success); border: 1px solid var(--success); padding: 6px 10px; font-size: 0.78rem; width: auto; margin-top: 0; }
-
-    /* Admin Specific */
-    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
-    .stat-box { background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 10px; text-align: center; }
-    .stat-box strong { display: block; font-size: 1.2rem; color: var(--gold); }
-    .stat-box span { font-size: 0.72rem; color: var(--muted); }
-    
-    .appt-card { border-left: 4px solid var(--gold); }
-    .appt-card.cancelada { border-left-color: var(--danger); opacity: 0.6; }
-    .appt-card.completada { border-left-color: var(--success); }
-    .appt-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; }
-    .appt-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-
-    .hidden { display: none !important; }
-    .tabs { display: flex; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-    .tab-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 8px 12px; border-radius: 8px; font-size: 0.82rem; cursor: pointer; }
-    .tab-btn.active { border-color: var(--gold); color: var(--gold); }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#11100e">
+<meta name="description" content="La Santa Barber — estilo, precisión y reservas por WhatsApp.">
+<title>La Santa Barber | Agenda tu cita</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./assets/icon.svg">
+<link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-
-<header>
-  <div class="header-top">
-    <div class="brand">
-      <h1 id="shopTitle">ROYAL BARBER STUDIO</h1>
-      <p id="shopSubtitle">Estilo, precisión y puntualidad</p>
-    </div>
-    <div class="role-switch">
-      <button class="role-btn active" id="btnViewClient" onclick="switchRole('client')">Cliente</button>
-      <button class="role-btn" id="btnViewAdmin" onclick="switchRole('admin')">Dueño</button>
-    </div>
-  </div>
+<header class="topbar">
+  <a class="brand" href="#inicio" aria-label="La Santa Barber, inicio">
+    <img src="./assets/icon.svg" alt="" class="brand-mark">
+    <span><b>LA SANTA</b><small>BARBER · EST. 2025</small></span>
+  </a>
+  <nav><a href="#servicios">Servicios</a><a href="#equipo">Equipo</a><a href="#promos">Promociones</a></nav>
+  <a class="top-cta" href="#reservar">Reservar <span>↗</span></a>
 </header>
 
-<!-- ==================== VISTA CLIENTE ==================== -->
-<main id="clientView" class="container">
-  <div class="promo-banner" id="promoBox">
-    <span class="promo-badge">PROMO</span>
-    <div class="promo-text" id="promoDisplay">Cargando promoción...</div>
+<main id="inicio">
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">BARBERÍA · ESTILO · TRADICIÓN</p>
+    <h1>Tu estilo.<br><em>Tu momento.</em></h1>
+    <p class="lead">Un espacio para renovar tu imagen, disfrutar el ritual y salir con el estilo que te representa.</p>
+    <div class="hero-actions"><a class="btn gold" href="#reservar">Agenda tu cita <span>→</span></a><a class="text-link" href="#servicios">Conoce nuestros servicios</a></div>
+    <div class="hero-meta"><span>✦ Atención personalizada</span><span>✦ Lunes a domingo</span></div>
   </div>
+  <div class="hero-art" role="img" aria-label="Silla clásica de barbería en un ambiente elegante">
+    <div class="art-ring"></div><div class="art-chair">✂</div>
+    <div class="art-caption"><b>LA SANTA BARBER</b><small>PRECISIÓN EN CADA DETALLE</small></div>
+  </div>
+</section>
 
-  <h2>1. Elige tu Servicio</h2>
-  <div id="clientServicesList"></div>
+<section class="intro-strip"><span>01 / IDENTIDAD</span><p>Tradición en el oficio. Actitud en el resultado.</p><span>EST. 2025</span></section>
 
-  <h2>2. Selecciona tu Barbero</h2>
-  <div class="barbers-grid" id="clientBarbersList"></div>
+<section class="section" id="servicios">
+  <div class="section-head"><div><p class="eyebrow">LO QUE HACEMOS</p><h2>Servicios <em>y tarifas</em></h2></div><p>Elige tu servicio y reserva en pocos pasos.</p></div>
+  <div id="servicesGrid" class="services-grid"></div>
+  <p class="fineprint">Los demás servicios y tarifas se consultan directamente con la administración.</p>
+</section>
 
-  <h2>3. Fecha y Hora Disponible</h2>
-  <input type="date" id="bookingDate" onchange="renderTimeSlots()" />
-  <div class="slots-grid" id="timeSlotsGrid"></div>
+<section class="team-section" id="equipo">
+  <div class="section-head"><div><p class="eyebrow">MANOS EXPERTAS</p><h2>Conoce al <em>equipo</em></h2></div><p>Profesionales con experiencia en cortes, fades, diseños y cuidado de barba.</p></div>
+  <div id="barbersGrid" class="barbers-grid"></div>
+</section>
 
-  <h2>4. Tus Datos para la Reserva</h2>
-  <input type="text" id="clientName" placeholder="Tu nombre completo" />
-  <input type="tel" id="clientPhone" placeholder="Tu número de WhatsApp (ej. 3001234567)" />
+<section class="booking-section" id="reservar">
+  <div class="booking-intro"><p class="eyebrow">RESERVA TU ESPACIO</p><h2>Tu próxima cita<br><em>comienza aquí.</em></h2><p>Completa tus datos. Revisaremos tu solicitud por WhatsApp y confirmaremos la disponibilidad.</p>
+    <div class="booking-note"><b>Importante</b><span>La solicitud no queda confirmada hasta que el barbero responda y confirme el turno.</span></div>
+  </div>
+  <form id="bookingForm" class="booking-form">
+    <div class="form-title"><span>RESERVA / 01</span><b>Datos de tu cita</b></div>
+    <label>Nombre completo<input id="clientName" name="name" autocomplete="name" required maxlength="90" placeholder="¿Cómo te llamas?"></label>
+    <label>WhatsApp / teléfono<input id="clientPhone" name="phone" type="tel" autocomplete="tel" required inputmode="tel" pattern="[0-9+() -]{7,20}" placeholder="Tu número de contacto"></label>
+    <label>Servicio<select id="serviceSelect" required><option value="">Selecciona un servicio</option></select></label>
+    <label>Barbero<select id="barberSelect" required><option value="">Selecciona un barbero</option><option value="Cualquiera">Cualquiera disponible</option></select></label>
+    <div class="form-row"><label>Fecha<input id="bookingDate" type="date" required></label><label>Hora<select id="bookingTime" required disabled><option value="">Primero elige fecha</option></select></label></div>
+    <label>Dirección o barrio <span class="optional">(opcional)</span><input id="clientAddress" maxlength="140" placeholder="Barrio, edificio o dirección"></label>
+    <label>Nota para el barbero <span class="optional">(opcional)</span><textarea id="clientNote" rows="2" maxlength="300" placeholder="Cuéntanos algún detalle de tu estilo..."></textarea></label>
+    <label class="consent"><input id="privacyConsent" type="checkbox" required><span>Autorizo el tratamiento de mis datos personales para gestionar esta solicitud de cita. He leído la <a href="./privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</span></label>
+    <button class="btn gold submit" type="submit">Enviar solicitud por WhatsApp <span>↗</span></button>
+    <p class="micro">Al enviar se abrirá WhatsApp con los datos de tu solicitud. Debes pulsar “Enviar” allí para compartirla.</p>
+    <div id="bookingFeedback" class="feedback" role="status" aria-live="polite"></div>
+  </form>
+</section>
 
-  <button class="btn" onclick="confirmBooking()">Confirmar Cita y Enviar por WhatsApp</button>
+<section class="promo-section" id="promos"><p class="eyebrow">NOVEDADES</p><h2>Promociones <em>y eventos</em></h2><div class="promo-card"><span class="promo-star">✦</span><div><b>Pregunta por nuestras promociones</b><p>Consulta en WhatsApp las novedades, paquetes y disponibilidad especial de la semana.</p></div><a id="promoWhatsapp" class="round-arrow" href="#" target="_blank" rel="noopener" aria-label="Consultar promociones">↗</a></div></section>
+
+<section class="contact-section"><div><p class="eyebrow">ENCUÉNTRANOS</p><h2>Nos vemos <em>en la barbería.</em></h2><p>Calle 38 No. 44 – 42, Calle Vieja</p><p class="hours">Lun–Sáb · 9:00 a. m. – 8:30 p. m.<br>Domingos y festivos · 10:00 a. m. – 6:00 p. m.</p></div>
+<div class="socials"><a id="instagramLink" href="https://www.instagram.com/la_santa.barber_/" target="_blank" rel="noopener">Instagram ↗</a><a id="facebookLink" href="#" target="_blank" rel="noopener">Facebook ↗</a><a href="mailto:neiker_2532@icloud.com">Correo ↗</a><a id="mainWhatsapp" href="#" target="_blank" rel="noopener">WhatsApp ↗</a></div></section>
 </main>
 
-<!-- ==================== VISTA ADMINISTRADOR (DUEÑO) ==================== -->
-<main id="adminView" class="container hidden">
-  <div class="stats-row">
-    <div class="stat-box"><strong id="statToday">0</strong><span>Citas Hoy</span></div>
-    <div class="stat-box"><strong id="statActive">0</strong><span>Activas</span></div>
-    <div class="stat-box"><strong id="statRevenue">$0</strong><span>Estimado</span></div>
-  </div>
+<footer><span>© 2025–2026 LA SANTA BARBER</span><span>Desarrollo de software · Luis Rafael Martínez Angulo</span><a href="./privacidad.html">Privacidad</a></footer>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchAdminTab('agenda', this)">Agenda</button>
-    <button class="tab-btn" onclick="switchAdminTab('services', this)">Servicios</button>
-    <button class="tab-btn" onclick="switchAdminTab('barbers', this)">Barberos</button>
-    <button class="tab-btn" onclick="switchAdminTab('config', this)">Negocio</button>
-  </div>
+<a class="floating-wa" id="floatingWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp"><span>✆</span><b>Agenda tu cita</b></a>
 
-  <!-- TAB 1: AGENDA -->
-  <section id="tab-agenda">
-    <div style="display:flex; gap:8px; margin-bottom:12px;">
-      <input type="date" id="adminFilterDate" onchange="renderAdminAgenda()" style="margin-bottom:0;" />
-      <button class="btn btn-outline" style="width:auto; margin-top:0; padding:0 14px;" onclick="document.getElementById('adminFilterDate').value=''; renderAdminAgenda();">Todas</button>
-    </div>
-    <div id="adminAppointmentsList"></div>
-  </section>
+<!-- El panel no aparece en la navegación pública. Entrar mediante #admin y PIN local de demostración.
+     Para uso multiusuario/producción, reemplazar por autenticación en backend. -->
+<section id="adminGate" class="admin-gate hidden">
+ <div class="admin-box"><button class="close-admin" id="closeAdmin" aria-label="Cerrar">×</button><p class="eyebrow">ACCESO RESTRINGIDO</p><h2>Panel del <em>propietario</em></h2><p>Ingresa el PIN de administración de este dispositivo.</p>
+ <form id="pinForm"><label>PIN<input id="adminPin" type="password" inputmode="numeric" autocomplete="current-password" required placeholder="PIN de 4 o más dígitos"></label><button class="btn gold" type="submit">Entrar al panel</button><p id="pinError" class="error"></p></form></div>
+</section>
 
-  <!-- TAB 2: SERVICIOS -->
-  <section id="tab-services" class="hidden">
-    <div class="card">
-      <h3 style="font-size:0.9rem; margin-bottom:8px; color:var(--gold);">Agregar Nuevo Servicio</h3>
-      <input type="text" id="newSrvName" placeholder="Nombre (ej. Corte + Barba)" />
-      <div style="display:flex; gap:8px;">
-        <input type="number" id="newSrvPrice" placeholder="Precio (ej. 25000)" />
-        <input type="number" id="newSrvDuration" placeholder="Minutos (ej. 45)" />
-      </div>
-      <button class="btn" onclick="addService()">+ Guardar Servicio</button>
-    </div>
-    <div id="adminServicesList"></div>
-  </section>
+<section id="adminPanel" class="admin-panel hidden">
+ <div class="admin-head"><div><p class="eyebrow">GESTIÓN LOCAL</p><h2>Panel del <em>propietario</em></h2></div><button id="adminLogout" class="btn dark">Salir</button></div>
+ <div class="admin-warning">Esta versión guarda los registros en el navegador de este dispositivo. Las solicitudes de los clientes llegan por WhatsApp; no existe sincronización automática entre dispositivos ni agenda central compartida.</div>
+ <div class="admin-toolbar"><input type="date" id="adminDate"><button id="exportCsv" class="btn outline">Exportar CSV</button><button id="changePin" class="btn outline">Cambiar PIN</button></div>
+ <div id="adminStats" class="admin-stats"></div>
+ <div class="admin-filters"><button data-filter="all" class="active">Todas</button><button data-filter="pendiente">Pendientes</button><button data-filter="confirmada">Confirmadas</button><button data-filter="cancelada">Canceladas</button><button data-filter="completada">Completadas</button></div>
+ <div id="adminBookings" class="admin-bookings"></div>
+ <div class="admin-bottom"><button id="addManual" class="btn gold">＋ Registrar cita recibida por WhatsApp</button><button id="clearCancelled" class="btn outline">Eliminar canceladas de este dispositivo</button></div>
+</section>
 
-  <!-- TAB 3: BARBEROS -->
-  <section id="tab-barbers" class="hidden">
-    <div class="card">
+<dialog id="manualDialog"><form method="dialog" id="manualForm" class="dialog-card"><button class="close-dialog" value="cancel" aria-label="Cerrar">×</button><p class="eyebrow">AGENDA DEL NEGOCIO</p><h3>Registrar una cita</h3><label>Cliente<input id="mName" required></label><label>Teléfono<input id="mPhone" required></label><label>Servicio<select id="mService"></select></label><label>Barbero<select id="mBarber"></select></label><div class="form-row"><label>Fecha<input id="mDate" type="date" required></label><label>Hora<input id="mTime" type="time" required></label></div><button id="saveManual" class="btn gold" value="default">Guardar cita local</button></form></dialog>
+
+<script src="./app.js" defer></script>
+</body></html>
