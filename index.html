@@ -8,7 +8,10 @@
 <title>La Santa Barber | Agenda tu cita</title>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="./assets/icon.svg">
+<link rel="apple-touch-icon" href="./assets/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -17,8 +20,9 @@
     <img src="./assets/icon.svg" alt="" class="brand-mark">
     <span><b id="shopTitle">LA SANTA</b><small>BARBER · EST. 2025</small></span>
   </a>
-  <nav><a href="#servicios">Servicios</a><a href="#equipo">Equipo</a><a href="#promos">Promociones</a></nav>
-  <a class="top-cta" href="#reservar">Reservar <span>↗</span></a>
+  <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-controls="primaryNav" aria-expanded="false"><span></span><span></span><span></span></button>
+  <nav id="primaryNav"><a href="#servicios">Servicios</a><a href="#equipo">Equipo</a><a href="#promos">Promociones</a><a href="#contacto">Contacto</a></nav>
+  <div class="header-actions"><button class="install-app" id="installApp" type="button" aria-label="Instalar La Santa Barber">＋ Instalar</button><a class="top-cta" href="#reservar">Reservar <span>↗</span></a></div>
 </header>
 
 <main id="inicio">
@@ -50,8 +54,8 @@
 </section>
 
 <section class="booking-section" id="reservar">
-  <div class="booking-intro"><p class="eyebrow">RESERVA TU ESPACIO</p><h2>Tu próxima cita<br><em>comienza aquí.</em></h2><p>Completa tus datos. Revisaremos tu solicitud por WhatsApp y confirmaremos la disponibilidad.</p>
-    <div class="booking-note"><b>Importante</b><span>La solicitud no queda confirmada hasta que el barbero responda y confirme el turno.</span></div>
+  <div class="booking-intro"><p class="eyebrow">RESERVA TU ESPACIO</p><h2>Tu próxima cita<br><em>comienza aquí.</em></h2><p>Completa tus datos. Enviaremos tu solicitud al barbero por WhatsApp para revisar y confirmar la disponibilidad.</p>
+    <div class="booking-note"><b>Importante</b><span>Los horarios son orientativos. La cita solo queda confirmada cuando el barbero responde por WhatsApp. Esta versión no consulta una agenda central en tiempo real.</span></div>
   </div>
   <form id="bookingForm" class="booking-form">
     <div class="form-title"><span>RESERVA / 01</span><b>Datos de tu cita</b></div>
@@ -71,12 +75,13 @@
 
 <section class="promo-section" id="promos"><p class="eyebrow">NOVEDADES</p><h2>Promociones <em>y eventos</em></h2><div class="promo-card"><span class="promo-star">✦</span><div><b>Pregunta por nuestras promociones</b><p>Consulta en WhatsApp las novedades, paquetes y disponibilidad especial de la semana.</p></div><a id="promoWhatsapp" class="round-arrow" href="#" target="_blank" rel="noopener" aria-label="Consultar promociones">↗</a></div></section>
 
-<section class="contact-section"><div><p class="eyebrow">ENCUÉNTRANOS</p><h2>Nos vemos <em>en la barbería.</em></h2><p>Calle 38 No. 44 – 42, Calle Vieja</p><p class="hours">Lun–Sáb · 9:00 a. m. – 8:30 p. m.<br>Domingos y festivos · 10:00 a. m. – 6:00 p. m.</p></div>
-<div class="socials"><a id="instagramLink" href="https://www.instagram.com/la_santa.barber_/" target="_blank" rel="noopener">Instagram ↗</a><a id="facebookLink" href="#" target="_blank" rel="noopener">Facebook ↗</a><a href="mailto:neiker_2532@icloud.com">Correo ↗</a><a id="mainWhatsapp" href="#" target="_blank" rel="noopener">WhatsApp ↗</a></div></section>
+<section class="contact-section" id="contacto"><div><p class="eyebrow">ENCUÉNTRANOS</p><h2>Nos vemos <em>en la barbería.</em></h2><p><a class="address-link" href="https://www.google.com/maps/search/?api=1&query=Calle+38+No.+44-42+Calle+Vieja" target="_blank" rel="noopener noreferrer">Calle 38 No. 44 – 42, Calle Vieja ↗</a></p><p class="hours">Lun–Sáb · 9:00 a. m. – 8:30 p. m.<br>Domingos y festivos · 10:00 a. m. – 6:00 p. m.</p></div>
+<div class="socials"><a id="instagramLink" href="https://www.instagram.com/la_santa.barber_/" target="_blank" rel="noopener">Instagram ↗</a><a id="facebookLink" href="#" target="_blank" rel="noopener">Facebook ↗</a><a id="ownerEmailLink" href="mailto:neiker_2532@icloud.com">Correo ↗</a><a id="mainWhatsapp" href="#" target="_blank" rel="noopener">WhatsApp ↗</a></div></section>
 </main>
 
 <footer><span>© 2025–2026 LA SANTA BARBER</span><span>Desarrollo de software · Luis Rafael Martínez Angulo</span><a href="./privacidad.html">Privacidad</a></footer>
 
+<div class="connection-status" id="connectionStatus" role="status" aria-live="polite">Comprobando conexión…</div>
 <a class="floating-wa" id="floatingWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp"><span>✆</span><b>Agenda tu cita</b></a>
 
 <!-- El panel no aparece en la navegación pública. Entrar mediante #admin y PIN local de demostración.
@@ -88,7 +93,7 @@
 
 <section id="adminPanel" class="admin-panel hidden">
  <div class="admin-head"><div><p class="eyebrow">GESTIÓN LOCAL</p><h2>Panel del <em>propietario</em></h2></div><button id="adminLogout" class="btn dark">Salir</button></div>
- <div class="admin-warning">Esta versión guarda los registros en el navegador de este dispositivo. Las solicitudes de los clientes llegan por WhatsApp; no existe sincronización automática entre dispositivos ni agenda central compartida.</div>
+ <div class="admin-warning">Este panel es una agenda auxiliar local: guarda registros solo en este navegador. El PIN de demostración no es una barrera de seguridad real. No existe sincronización automática entre dispositivos ni agenda central compartida.</div>
  <div class="admin-toolbar"><input type="date" id="adminDate"><button id="exportCsv" class="btn outline">Exportar CSV</button><button id="changePin" class="btn outline">Cambiar PIN</button></div>
  <div id="adminStats" class="admin-stats"></div>
  <div class="admin-filters"><button data-filter="all" class="active">Todas</button><button data-filter="pendiente">Pendientes</button><button data-filter="confirmada">Confirmadas</button><button data-filter="cancelada">Canceladas</button><button data-filter="completada">Completadas</button></div>
@@ -96,7 +101,9 @@
  <div class="admin-bottom"><button id="addManual" class="btn gold">＋ Registrar cita recibida por WhatsApp</button><button id="clearCancelled" class="btn outline">Eliminar canceladas de este dispositivo</button></div>
 </section>
 
-<dialog id="manualDialog"><form method="dialog" id="manualForm" class="dialog-card"><button class="close-dialog" value="cancel" aria-label="Cerrar">×</button><p class="eyebrow">AGENDA DEL NEGOCIO</p><h3>Registrar una cita</h3><label>Cliente<input id="mName" required></label><label>Teléfono<input id="mPhone" required></label><label>Servicio<select id="mService"></select></label><label>Barbero<select id="mBarber"></select></label><div class="form-row"><label>Fecha<input id="mDate" type="date" required></label><label>Hora<input id="mTime" type="time" required></label></div><button id="saveManual" class="btn gold" value="default">Guardar cita local</button></form></dialog>
+<dialog id="manualDialog"><form method="dialog" id="manualForm" class="dialog-card"><button class="close-dialog" id="closeManual" type="button" aria-label="Cerrar">×</button><p class="eyebrow">AGENDA DEL NEGOCIO</p><h3>Registrar una cita</h3><label>Cliente<input id="mName" required></label><label>Teléfono<input id="mPhone" required></label><label>Servicio<select id="mService"></select></label><label>Barbero<select id="mBarber"></select></label><div class="form-row"><label>Fecha<input id="mDate" type="date" required></label><label>Hora<input id="mTime" type="time" required></label></div><button id="saveManual" class="btn gold" value="default">Guardar cita local</button></form></dialog>
 
+<div class="update-notice hidden" id="updateNotice" role="status"><span>Hay una actualización disponible.</span><button id="updateApp" type="button">Actualizar ahora</button></div>
+<dialog id="installDialog" class="install-dialog"><div class="dialog-card"><button class="close-dialog" id="closeInstall" type="button" aria-label="Cerrar">×</button><p class="eyebrow">LA SANTA BARBER</p><h3>Instala nuestra aplicación</h3><p>En iPhone: pulsa Compartir y elige “Agregar a pantalla de inicio”. En Android o computador: abre el menú del navegador y selecciona “Instalar aplicación” o “Agregar a pantalla de inicio”, si está disponible.</p></div></dialog>
 <script src="./app.js" defer></script>
 </body></html>

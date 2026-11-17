@@ -1,14 +1,19 @@
 {
   "id": "./",
   "name": "La Santa Barber",
-  "short_name": "La Santa Barber",
-  "description": "La Santa Barber — estilo, precisión y reservas por WhatsApp.",
+  "short_name": "La Santa",
+  "description": "Agenda tu cita en La Santa Barber. Estilo, precisión y tradición.",
+  "lang": "es-CO",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#11100e",
   "theme_color": "#11100e",
+  "categories": ["lifestyle", "beauty"],
   "icons": [
-    { "src": "./assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "./assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }
