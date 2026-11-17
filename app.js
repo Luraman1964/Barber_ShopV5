@@ -6,7 +6,7 @@
 const CONFIG = {
   shopName: 'La Santa Barber',
   address: 'Calle 38 No. 44 – 42, Calle Vieja',
-  ownerEmail: 'neiker_2532@icloud.com',
+  ownerEmail: 'barbers_shop_plus@outlook.com',
   instagram: 'https://www.instagram.com/la_santa.barber_/',
   facebook: '',
   mainWhatsApp: '573001100102',
